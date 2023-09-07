@@ -1,6 +1,5 @@
 package com.myportfolio.myweatherapp.ui
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,10 +19,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.myportfolio.myweatherapp.domain.model.getLocationString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +30,7 @@ fun MyWeatherApp(
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
-    val viewModel: AppViewModel = viewModel()
+    val viewModel: AppViewModel = viewModel(factory = AppViewModel.Factory)
     val uiState by viewModel.uiState.collectAsState()
 
     val mainScreenToChangeLocationScreen: () -> Unit = {
@@ -76,11 +75,11 @@ fun MyWeatherApp(
                 }
             )
         }
-    ) {
+    ) { paddingValues ->
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(it),
+                .padding(paddingValues),
             color = MaterialTheme.colorScheme.background
         ) {
             NavHost(
@@ -88,14 +87,28 @@ fun MyWeatherApp(
                 startDestination = "main",
             ) {
                 composable(route = "main") {
-                    MainScreen()
+                    MainScreen(
+                        weatherInfo = uiState.weatherInfo,
+                        location = uiState.currentLocation,
+                        forecastDayList = uiState.forecastDayList
+                    )
                 }
                 composable(route = "change_location") {
                     BackHandler (
                         onBack = changeLocationScreenToMainScreen
                     )
                     ChangeLocationScreen(
-
+                        showSearchHistory = uiState.showSearchHistory,
+                        searchBarText = uiState.searchBarText,
+                        searchBarHistory = uiState.locationHistoryList,
+                        searchBarResults = uiState.locationSearchResultList,
+                        onSearchBarTextChange = {viewModel.updateSearchBarText(it)},
+                        onSearchButtonClicked = {viewModel.getLocationSearchResults()},
+                        onLocationCardClick = {
+                            viewModel.getWeatherInfo(it.getLocationString())
+                            viewModel.addToLocationHistoryList(it)
+                            changeLocationScreenToMainScreen()
+                        }
                     )
                 }
             }

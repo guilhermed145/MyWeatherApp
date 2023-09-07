@@ -2,6 +2,7 @@ package com.myportfolio.myweatherapp.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,18 +19,29 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.HorizontalAlignmentLine
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.myportfolio.myweatherapp.R
+import com.myportfolio.myweatherapp.domain.model.ForecastInfo
+import com.myportfolio.myweatherapp.domain.model.Location
+import com.myportfolio.myweatherapp.domain.model.WeatherInfo
+import com.myportfolio.myweatherapp.domain.model.getIconUrl
 
 @Composable
 fun MainScreen(
+    weatherInfo: WeatherInfo,
+    location: Location,
+    forecastDayList: List<ForecastInfo>,
     modifier : Modifier = Modifier
 ) {
     LazyColumn(
@@ -37,19 +50,26 @@ fun MainScreen(
             .padding(8.dp)
     ) {
         item {
-            LocationInfo()
+            LocationInfo(
+                location = location
+            )
         }
         item {
-            WeatherInfo()
+            WeatherInfo(
+                weatherInfo = weatherInfo
+            )
         }
         item {
-            FutureWeatherInfo()
+            FutureWeatherInfo(
+                forecastDayList = forecastDayList
+            )
         }
     }
 }
 
 @Composable
 fun LocationInfo(
+    location: Location,
     modifier : Modifier = Modifier
 ) {
     Column (
@@ -59,7 +79,7 @@ fun LocationInfo(
             modifier = Modifier
         ) {
             Text(
-                text = "City Name",
+                text = location.name,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -68,10 +88,10 @@ fun LocationInfo(
             modifier = Modifier
         ) {
             Text(
-                text = "State Name" + ", "
+                text = location.region + ", "
             )
             Text(
-                text = "Country Name"
+                text = location.country
             )
         }
     }
@@ -79,42 +99,53 @@ fun LocationInfo(
 
 @Composable
 fun WeatherInfo(
+    weatherInfo: WeatherInfo,
     modifier : Modifier = Modifier
 ) {
     Column(
         modifier = modifier.padding(vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(R.drawable.ic_launcher_foreground),
-            contentDescription = null,
-            modifier = Modifier.width(400.dp),
-            alignment = Alignment.Center,
-            contentScale = ContentScale.Crop,
-        )
+        Row (
+            modifier.fillMaxWidth()
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(weatherInfo.condition.getIconUrl())
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                modifier = Modifier.width(64.dp),
+                contentScale = ContentScale.Crop,
+            )
+            Text(
+                text = weatherInfo.condition.text,
+                modifier = Modifier.align(CenterVertically)
+            )
+        }
         Row(
             modifier.fillMaxWidth()
         ) {
             Text(
-                text = "30ºC SUNNY",
+                text = weatherInfo.temp_c.toString() + "ºC",
                 modifier = Modifier.weight(1f),
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "23/08",
+                text = "Wind direction: " + weatherInfo.wind_dir,
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.End
             )
         }
         Row {
             Text(
-                text = "Min 21ºC - Max 32º",
+                text = "Wind speed: " + weatherInfo.wind_kph.toString() + "Km/h",
                 modifier = Modifier.fillMaxWidth()
             )
         }
         Text(
-            text = "Precipitation: 20mm",
+            text = "Precipitation: " + weatherInfo.precip_mm.toString() + "mm",
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -122,19 +153,21 @@ fun WeatherInfo(
 
 @Composable
 fun FutureWeatherInfo(
+    forecastDayList: List<ForecastInfo>,
     modifier: Modifier = Modifier
 ) {
     Column (
         modifier = modifier
     ) {
-        FutureWeatherCard()
-        FutureWeatherCard()
-        FutureWeatherCard()
+        forecastDayList.forEach {
+            FutureWeatherCard(forecastInfo = it)
+        }
     }
 }
 
 @Composable
 fun FutureWeatherCard(
+    forecastInfo: ForecastInfo,
     modifier: Modifier = Modifier
 ) {
     Card (
@@ -146,22 +179,29 @@ fun FutureWeatherCard(
             modifier = Modifier.padding(8.dp)
         ) {
             Row {
-                Image(
-                    painter = painterResource(R.drawable.ic_launcher_foreground),
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(forecastInfo.condition.getIconUrl())
+                        .crossfade(true)
+                        .build(),
                     contentDescription = null,
+                    modifier = Modifier.width(64.dp),
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.Crop,
                 )
                 Text(
-                    text = "Thursday",
+                    text = forecastInfo.condition.text,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
                 Text(
-                    text = "24/08",
+                    text = forecastInfo.date,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.End
                 )
             }
             Text(
-                text = "Min 21ºC - Max 32ºC"
+                text = "Min " + forecastInfo.mintemp_c.toString() + "ºC - Max "
+                        + forecastInfo.maxtemp_c.toString() + "ºC"
             )
         }
     }
