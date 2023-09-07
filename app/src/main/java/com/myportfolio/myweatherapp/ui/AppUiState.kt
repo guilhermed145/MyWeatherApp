@@ -11,6 +11,10 @@ import com.myportfolio.myweatherapp.domain.model.WeatherInfo
  */
 data class AppUiState(
     val currentScreen: String = "main",
+    val isWeatherLoading: Boolean = false,
+    val searchBarText: String = "",
+    val showSearchHistory: Boolean = false,
+    val locationHistoryList: List<Location> = listOf(),
 
     val weatherInfo: WeatherInfo =
         WeatherInfo(
@@ -63,7 +67,4 @@ data class AppUiState(
             tz_id = ""
         ),
     ),
-    val searchBarText: String = "",
-    val showSearchHistory: Boolean = false,
-    val locationHistoryList: List<Location> = listOf(),
 )

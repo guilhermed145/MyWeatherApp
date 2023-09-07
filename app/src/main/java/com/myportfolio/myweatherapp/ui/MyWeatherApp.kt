@@ -22,7 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.myportfolio.myweatherapp.domain.model.getLocationString
+import com.myportfolio.myweatherapp.domain.model.getCoordinatesString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,7 +90,11 @@ fun MyWeatherApp(
                     MainScreen(
                         weatherInfo = uiState.weatherInfo,
                         location = uiState.currentLocation,
-                        forecastDayList = uiState.forecastDayList
+                        forecastDayList = uiState.forecastDayList,
+                        isLoading = uiState.isWeatherLoading,
+                        onRefresh = {
+                            viewModel.getWeatherInfo(uiState.currentLocation.getCoordinatesString())
+                        }
                     )
                 }
                 composable(route = "change_location") {
@@ -105,7 +109,7 @@ fun MyWeatherApp(
                         onSearchBarTextChange = {viewModel.updateSearchBarText(it)},
                         onSearchButtonClicked = {viewModel.getLocationSearchResults()},
                         onLocationCardClick = {
-                            viewModel.getWeatherInfo(it.getLocationString())
+                            viewModel.getWeatherInfo(it.getCoordinatesString())
                             viewModel.addToLocationHistoryList(it)
                             changeLocationScreenToMainScreen()
                         }

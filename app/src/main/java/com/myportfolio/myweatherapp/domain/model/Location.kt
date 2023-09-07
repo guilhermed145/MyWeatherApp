@@ -15,6 +15,6 @@ data class Location (
     val tz_id: String
 )
 
-fun Location.getLocationString(): String {
+fun Location.getCoordinatesString(): String {
     return lat.toString() + ", " + lon.toString()
 }

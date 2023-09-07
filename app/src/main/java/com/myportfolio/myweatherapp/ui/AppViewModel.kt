@@ -56,6 +56,9 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
     fun addToLocationHistoryList(location: Location) {
         val newHistory: MutableList<Location> = mutableListOf()
         newHistory.addAll(uiState.value.locationHistoryList)
+        if (newHistory.contains(location)) {
+            newHistory.remove(location)
+        }
         newHistory.add(location)
         _uiState.update {
             it.copy(locationHistoryList = newHistory)
@@ -64,6 +67,11 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
 
     fun getWeatherInfo(cityLocation: String) {
         viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    isWeatherLoading = true
+                )
+            }
             try {
                 val apiData = appRepository.getWeatherInfo(cityLocation)
                 val forecastdayList = mutableListOf<ForecastInfo>()
@@ -81,6 +89,11 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
                 Log.e("IOEXCEPTION", "getWeatherInfo()", e)
             } catch (e: HttpException) {
                 Log.e("HTTPEXCEPTION", "getWeatherInfo()", e)
+            }
+            _uiState.update {
+                it.copy(
+                    isWeatherLoading = false
+                )
             }
         }
     }

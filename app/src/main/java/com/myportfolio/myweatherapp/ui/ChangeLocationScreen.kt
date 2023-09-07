@@ -2,6 +2,7 @@ package com.myportfolio.myweatherapp.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.myportfolio.myweatherapp.domain.model.Location
@@ -59,9 +62,6 @@ fun ChangeLocationScreen (
                     color = Color.Gray
                 )
             },
-/*            leadingIcon = {
-                Icon(imageVector = Icons.Filled.Search, contentDescription = "Search icon")
-            },*/
             trailingIcon = {
                 IconButton(
                     onClick = onSearchButtonClicked
@@ -78,18 +78,28 @@ fun ChangeLocationScreen (
                 imeAction = ImeAction.Search
             ),
             keyboardActions = KeyboardActions(onSearch = { onSearchButtonClicked() }),
+            singleLine = true,
             shape = RoundedCornerShape(40.dp)
         )
         LazyColumn () {
             item{
-                LocationsList(
-                    locationList = if (showSearchHistory) {
-                        searchBarHistory.asReversed()
-                    } else {
-                        searchBarResults
-                    },
-                    onLocationCardClick = onLocationCardClick
-                )
+                if (!showSearchHistory && searchBarResults.isEmpty()) {
+                    Text(
+                        text = "No location was found.",
+                        modifier = Modifier.padding(vertical = 16.dp).fillMaxSize(),
+                        color = Color.DarkGray,
+                        textAlign = TextAlign.Center
+                    )
+                } else {
+                    LocationsList(
+                        locationList = if (showSearchHistory) {
+                            searchBarHistory.asReversed()
+                        } else {
+                            searchBarResults
+                        },
+                        onLocationCardClick = onLocationCardClick
+                    )
+                }
             }
         }
     }
@@ -105,10 +115,12 @@ fun LocationsList(
         modifier = modifier
     ) {
         for (location in locationList) {
-            LocationCard(
-                location = location,
-                onClick = onLocationCardClick
-            )
+            if (location.name != "") {
+                LocationCard(
+                    location = location,
+                    onClick = onLocationCardClick
+                )
+            }
         }
     }
 }

@@ -31,38 +31,51 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshState
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.myportfolio.myweatherapp.R
 import com.myportfolio.myweatherapp.domain.model.ForecastInfo
 import com.myportfolio.myweatherapp.domain.model.Location
 import com.myportfolio.myweatherapp.domain.model.WeatherInfo
+import com.myportfolio.myweatherapp.domain.model.getDateString
 import com.myportfolio.myweatherapp.domain.model.getIconUrl
 
+/**
+ * */
 @Composable
 fun MainScreen(
     weatherInfo: WeatherInfo,
     location: Location,
     forecastDayList: List<ForecastInfo>,
-    modifier : Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
+    onRefresh: () -> Unit = {},
 ) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(8.dp)
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing = isLoading),
+        onRefresh = onRefresh
     ) {
-        item {
-            LocationInfo(
-                location = location
-            )
-        }
-        item {
-            WeatherInfo(
-                weatherInfo = weatherInfo
-            )
-        }
-        item {
-            FutureWeatherInfo(
-                forecastDayList = forecastDayList
-            )
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(8.dp)
+        ) {
+            item {
+                LocationInfo(
+                    location = location
+                )
+            }
+            item {
+                WeatherInfo(
+                    weatherInfo = weatherInfo
+                )
+            }
+            item {
+                FutureWeatherInfo(
+                    forecastDayList = forecastDayList
+                )
+            }
         }
     }
 }
@@ -194,7 +207,7 @@ fun FutureWeatherCard(
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
                 Text(
-                    text = forecastInfo.date,
+                    text = forecastInfo.getDateString(),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.End
                 )

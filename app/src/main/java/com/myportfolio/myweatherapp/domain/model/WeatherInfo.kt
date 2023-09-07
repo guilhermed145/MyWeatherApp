@@ -16,3 +16,4 @@ data class WeatherInfo (
     val wind_kph: Double,
     /**@SerialName("img_src") val imgSrc: String*/
 )
+
