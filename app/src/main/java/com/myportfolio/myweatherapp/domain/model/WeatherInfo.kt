@@ -3,7 +3,7 @@ package com.myportfolio.myweatherapp.domain.model
 
 
 /**
- * Data class representing the weather information.
+ * Data class representing the weather information that appears in the main screen.
  */
 data class WeatherInfo (
     val cloud: Int,

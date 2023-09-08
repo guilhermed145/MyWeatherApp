@@ -3,7 +3,7 @@ package com.myportfolio.myweatherapp.domain.model
 
 
 /**
- * Data class representing the location information.
+ * Data class representing the chosen location's information.
  */
 data class Location (
     val country: String,

@@ -13,11 +13,14 @@ import com.myportfolio.myweatherapp.domain.model.Location
 import com.myportfolio.myweatherapp.domain.model.WeatherInfo
 import com.myportfolio.myweatherapp.network.WeatherApiService
 
+/**
+ * The main Repository for the app.
+ */
 interface AppRepository {
-    /** Retrieves weather info from underlying data source */
+    /** Retrieves weather info from underlying data source. */
     suspend fun getWeatherInfo(cityName: String): MainDTO
 
-    /** Retrieves the location search results from underlying data source */
+    /** Retrieves the location search results from underlying data source. */
     suspend fun getLocationSearchResults(cityName: String): LocationSearchDTO
 }
 
@@ -34,6 +37,9 @@ class DefaultAppRepository(
     }
 }
 
+/**
+ * DTO to Model mapping functions.
+ */
 fun CurrentDTO.toWeatherInfo(): WeatherInfo {
     return WeatherInfo(
         cloud = cloud,

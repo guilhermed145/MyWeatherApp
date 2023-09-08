@@ -24,6 +24,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.myportfolio.myweatherapp.domain.model.getCoordinatesString
 
+/**
+ * The main composable for the app. It contains an instance for the Navigation Controller,
+ * the ViewModel and the UIState, along with all the composables representing a screen.
+ * Also contains a top bar with a search icon button that goes to the change location screen,
+ * and the NavHost, responsible for navigation between the screens.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyWeatherApp(

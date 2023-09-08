@@ -17,6 +17,9 @@ import com.myportfolio.myweatherapp.ui.MainScreen
 import com.myportfolio.myweatherapp.ui.MyWeatherApp
 import com.myportfolio.myweatherapp.ui.theme.MyWeatherAppTheme
 
+/**
+ * Class representing the main Activity that contains the whole app.
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,13 +34,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MyWeatherAppTheme {
-        MyWeatherApp()
     }
 }

@@ -22,7 +22,8 @@ import retrofit2.HttpException
 import java.io.IOException
 
 /**
- * The ViewModel Class
+ * The main ViewModel class for the app.
+ * It's responsible for retrieving the data and making the necessary changes to the UI State.
  */
 class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
 
@@ -33,13 +34,18 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
         getWeatherInfo("-23.53, -46.62")
     }
 
-    // Tells the app to change the screen
+    /**
+     * Tells the app to change the current screen.
+     */
     fun changeScreen(nextScreen : String){
         _uiState.update {
             it.copy(currentScreen = nextScreen)
         }
     }
 
+    /**
+     * Updates the string that represents the text inside the app's search bar.
+     */
     fun updateSearchBarText(text: String = "") {
         if (text == "") {
             if (!uiState.value.showSearchHistory) {
@@ -53,6 +59,9 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
         }
     }
 
+    /**
+     * Adds a new location to the location list that represents the search bar's history.
+     */
     fun addToLocationHistoryList(location: Location) {
         val newHistory: MutableList<Location> = mutableListOf()
         newHistory.addAll(uiState.value.locationHistoryList)
@@ -65,6 +74,9 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
         }
     }
 
+    /**
+     * Retrieves the data from the API and stores it in a WeatherInfo object.
+     */
     fun getWeatherInfo(cityLocation: String) {
         viewModelScope.launch {
             _uiState.update {
@@ -86,9 +98,9 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
                     )
                 }
             } catch (e: IOException) {
-                Log.e("IOEXCEPTION", "getWeatherInfo()", e)
+                Log.e("IO EXCEPTION", "getWeatherInfo()", e)
             } catch (e: HttpException) {
-                Log.e("HTTPEXCEPTION", "getWeatherInfo()", e)
+                Log.e("HTTP EXCEPTION", "getWeatherInfo()", e)
             }
             _uiState.update {
                 it.copy(
@@ -98,6 +110,9 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
         }
     }
 
+    /**
+     * Retrieves all the locations found after using the app's search bar.
+     */
     fun getLocationSearchResults() {
         viewModelScope.launch {
             try {
@@ -113,15 +128,15 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
                     )
                 }
             } catch (e: IOException) {
-                Log.e("API", "getLocationSearchResults()", e)
+                Log.e("IO EXCEPTION", "getLocationSearchResults()", e)
             } catch (e: HttpException) {
-                Log.e("HTTPEXCEPTION", "getLocationSearchResults()", e)
+                Log.e("HTTP EXCEPTION", "getLocationSearchResults()", e)
             }
         }
     }
 
     /**
-     * Factory for the viewModel that takes the repository as a dependency
+     * Factory for the viewModel that takes the repository as a dependency.
      */
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {

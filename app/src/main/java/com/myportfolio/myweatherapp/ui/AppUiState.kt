@@ -7,7 +7,7 @@ import com.myportfolio.myweatherapp.domain.model.WeatherInfo
 
 
 /**
- * App UI State
+ * The UI State stores all the states used in the app.
  */
 data class AppUiState(
     val currentScreen: String = "main",
@@ -30,6 +30,7 @@ data class AppUiState(
             windDir = "",
             windKph = 0.0,
         ),
+
     val currentLocation: Location =
         Location(
             country = "",
@@ -40,6 +41,7 @@ data class AppUiState(
             region = "",
             tzId = ""
         ),
+
     val forecastDayList: List<ForecastInfo> = mutableListOf(
         ForecastInfo(
             condition = Condition(
@@ -56,6 +58,7 @@ data class AppUiState(
             mintempF = 0.0
         )
     ),
+
     val locationSearchResultList: List<Location> = listOf(
         Location(
             country = "",

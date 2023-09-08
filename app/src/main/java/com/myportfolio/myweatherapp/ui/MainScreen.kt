@@ -30,6 +30,7 @@ import com.myportfolio.myweatherapp.domain.model.getDateString
 import com.myportfolio.myweatherapp.domain.model.getIconUrl
 
 /**
+ * The app's main screen. It shows all the weather information about the chosen location.
  * */
 @Composable
 fun MainScreen(
@@ -68,6 +69,9 @@ fun MainScreen(
     }
 }
 
+/**
+ * Composable that shows the current location information.
+ */
 @Composable
 fun LocationInfo(
     location: Location,
@@ -98,6 +102,9 @@ fun LocationInfo(
     }
 }
 
+/**
+ * Composable that shows the current weather information.
+ */
 @Composable
 fun WeatherInfo(
     weatherInfo: WeatherInfo,
@@ -152,6 +159,9 @@ fun WeatherInfo(
     }
 }
 
+/**
+ * Composable that shows the weather information for today and the next two days.
+ */
 @Composable
 fun FutureWeatherInfo(
     forecastDayList: List<ForecastInfo>,
@@ -166,6 +176,9 @@ fun FutureWeatherInfo(
     }
 }
 
+/**
+ * Contains the weather information about a specific day.
+ */
 @Composable
 fun FutureWeatherCard(
     forecastInfo: ForecastInfo,

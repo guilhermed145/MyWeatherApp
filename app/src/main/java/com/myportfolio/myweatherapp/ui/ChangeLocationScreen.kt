@@ -31,6 +31,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.myportfolio.myweatherapp.domain.model.Location
 
+/**
+ * Composable function that represents the screen which contains a search bar and possibly
+ * a list of locations.
+ * It's purpose is to change the location the app uses to retrieve the weather information.
+ */
 @Composable
 fun ChangeLocationScreen (
     modifier : Modifier = Modifier,
@@ -105,6 +110,10 @@ fun ChangeLocationScreen (
     }
 }
 
+/**
+ * A list containing either the search bar history or the search bar results.
+ * Can contain one or more LocationCard.
+ */
 @Composable
 fun LocationsList(
     modifier: Modifier = Modifier,
@@ -125,6 +134,10 @@ fun LocationsList(
     }
 }
 
+/**
+ * A clickable card that contains a location's name and region and can change the current
+ * location the app is using to the one represented in the card.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LocationCard(

@@ -7,7 +7,9 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
-
+/**
+ * The main Container for the app.
+ */
 interface AppContainer {
     val appRepository: AppRepository
 }
@@ -22,14 +24,14 @@ class DefaultAppContainer: AppContainer {
         .build()
 
     /**
-     * Retrofit service object for creating api calls
+     * Retrofit service object for making api calls.
      */
     private val retrofitService: WeatherApiService by lazy {
         retrofit.create(WeatherApiService::class.java)
     }
 
     /**
-     * DI implementation for Amphibians repository
+     * Dependency Injection implementation for Amphibians repository.
      */
     override val appRepository: AppRepository by lazy {
         DefaultAppRepository(retrofitService)
