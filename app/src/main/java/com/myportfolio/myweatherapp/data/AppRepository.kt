@@ -38,12 +38,12 @@ fun CurrentDTO.toWeatherInfo(): WeatherInfo {
     return WeatherInfo(
         cloud = cloud,
         condition = condition.toCondition(),
-        is_day = is_day,
-        precip_mm = precip_mm,
-        temp_c = temp_c,
-        temp_f = temp_f,
-        wind_dir = wind_dir,
-        wind_kph = wind_kph,
+        isDay = is_day,
+        precipMm = precip_mm,
+        tempC = temp_c,
+        tempF = temp_f,
+        windDir = wind_dir,
+        windKph = wind_kph,
     )
 }
 
@@ -51,11 +51,11 @@ fun LocationDTO.toLocation(): Location {
     return Location(
         country = country,
         lat = lat,
-        localtime = localtime,
+        localTime = localtime,
         lon = lon,
         name = name,
         region = region,
-        tz_id = tz_id
+        tzId = tz_id
     )
 }
 
@@ -63,13 +63,13 @@ fun ForecastdayDTO.toForecastInfo(): ForecastInfo {
     return ForecastInfo(
         condition = day.condition.toCondition(),
         date = date,
-        daily_chance_of_rain = day.daily_chance_of_rain,
-        daily_chance_of_snow = day.daily_chance_of_snow,
-        maxtemp_c = day.maxtemp_c,
-        maxtemp_f = day.maxtemp_f,
-        maxwind_kph = day.maxwind_kph,
-        mintemp_c = day.mintemp_c,
-        mintemp_f = day.mintemp_f,
+        dailyChanceOfRain = day.daily_chance_of_rain,
+        dailyChanceOfSnow = day.daily_chance_of_snow,
+        maxtempC = day.maxtemp_c,
+        maxtempF = day.maxtemp_f,
+        maxwindKph = day.maxwind_kph,
+        mintempC = day.mintemp_c,
+        mintempF = day.mintemp_f,
     )
 }
 
@@ -84,10 +84,10 @@ fun LocationSearchItemDTO.toLocaton(): Location {
     return Location(
         country = country,
         lat = lat,
-        localtime = "",
+        localTime = "",
         lon = lon,
         name = name,
         region = region,
-        tz_id = ""
+        tzId = ""
     )
 }

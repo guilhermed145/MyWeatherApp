@@ -8,12 +8,12 @@ package com.myportfolio.myweatherapp.domain.model
 data class WeatherInfo (
     val cloud: Int,
     val condition: Condition,
-    val is_day: Int,
-    val precip_mm: Double,
-    val temp_c: Double,
-    val temp_f: Double,
-    val wind_dir: String,
-    val wind_kph: Double,
+    val isDay: Int,
+    val precipMm: Double,
+    val tempC: Double,
+    val tempF: Double,
+    val windDir: String,
+    val windKph: Double,
     /**@SerialName("img_src") val imgSrc: String*/
 )
 

@@ -1,8 +1,5 @@
 package com.myportfolio.myweatherapp.ui
 
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,20 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,9 +22,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.myportfolio.myweatherapp.R
 import com.myportfolio.myweatherapp.domain.model.ForecastInfo
 import com.myportfolio.myweatherapp.domain.model.Location
 import com.myportfolio.myweatherapp.domain.model.WeatherInfo
@@ -140,25 +128,25 @@ fun WeatherInfo(
             modifier.fillMaxWidth()
         ) {
             Text(
-                text = weatherInfo.temp_c.toString() + "ºC",
+                text = weatherInfo.tempC.toString() + "ºC",
                 modifier = Modifier.weight(1f),
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Wind direction: " + weatherInfo.wind_dir,
+                text = "Wind direction: " + weatherInfo.windDir,
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.End
             )
         }
         Row {
             Text(
-                text = "Wind speed: " + weatherInfo.wind_kph.toString() + "Km/h",
+                text = "Wind speed: " + weatherInfo.windKph.toString() + "Km/h",
                 modifier = Modifier.fillMaxWidth()
             )
         }
         Text(
-            text = "Precipitation: " + weatherInfo.precip_mm.toString() + "mm",
+            text = "Precipitation: " + weatherInfo.precipMm.toString() + "mm",
             modifier = Modifier.fillMaxWidth()
         )
     }
@@ -213,8 +201,8 @@ fun FutureWeatherCard(
                 )
             }
             Text(
-                text = "Min " + forecastInfo.mintemp_c.toString() + "ºC - Max "
-                        + forecastInfo.maxtemp_c.toString() + "ºC"
+                text = "Min " + forecastInfo.mintempC.toString() + "ºC - Max "
+                        + forecastInfo.maxtempC.toString() + "ºC"
             )
         }
     }

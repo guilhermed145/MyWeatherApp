@@ -8,11 +8,11 @@ package com.myportfolio.myweatherapp.domain.model
 data class Location (
     val country: String,
     val lat: Double,
-    val localtime: String,
+    val localTime: String,
     val lon: Double,
     val name: String,
     val region: String,
-    val tz_id: String
+    val tzId: String
 )
 
 fun Location.getCoordinatesString(): String {

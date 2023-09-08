@@ -1,5 +1,8 @@
 package com.myportfolio.myweatherapp.data.dto
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class AstroDTO(
     val is_moon_up: Int,
     val is_sun_up: Int,

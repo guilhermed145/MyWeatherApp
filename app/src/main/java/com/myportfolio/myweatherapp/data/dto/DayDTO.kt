@@ -1,5 +1,8 @@
 package com.myportfolio.myweatherapp.data.dto
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class DayDTO(
     val avghumidity: Double,
     val avgtemp_c: Double,

@@ -1,5 +1,8 @@
 package com.myportfolio.myweatherapp.data.dto
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class HourDTO(
     val chance_of_rain: Int,
     val chance_of_snow: Int,

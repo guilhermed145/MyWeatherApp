@@ -23,22 +23,22 @@ data class AppUiState(
                 icon = "",
                 text = ""
             ),
-            is_day = 0,
-            precip_mm = 0.0,
-            temp_c = 0.0,
-            temp_f = 0.0,
-            wind_dir = "",
-            wind_kph = 0.0,
+            isDay = 0,
+            precipMm = 0.0,
+            tempC = 0.0,
+            tempF = 0.0,
+            windDir = "",
+            windKph = 0.0,
         ),
     val currentLocation: Location =
         Location(
             country = "",
             lat = 0.0,
-            localtime = "",
+            localTime = "",
             lon = 0.0,
             name = "",
             region = "",
-            tz_id = ""
+            tzId = ""
         ),
     val forecastDayList: List<ForecastInfo> = mutableListOf(
         ForecastInfo(
@@ -47,24 +47,24 @@ data class AppUiState(
                 text = ""
             ),
             date = "",
-            daily_chance_of_rain = 0,
-            daily_chance_of_snow = 0,
-            maxtemp_c = 0.0,
-            maxtemp_f = 0.0,
-            maxwind_kph = 0.0,
-            mintemp_c = 0.0,
-            mintemp_f = 0.0
+            dailyChanceOfRain = 0,
+            dailyChanceOfSnow = 0,
+            maxtempC = 0.0,
+            maxtempF = 0.0,
+            maxwindKph = 0.0,
+            mintempC = 0.0,
+            mintempF = 0.0
         )
     ),
     val locationSearchResultList: List<Location> = listOf(
         Location(
             country = "",
             lat = 0.0,
-            localtime = "",
+            localTime = "",
             lon = 0.0,
             name = "",
             region = "",
-            tz_id = ""
+            tzId = ""
         ),
     ),
 )
