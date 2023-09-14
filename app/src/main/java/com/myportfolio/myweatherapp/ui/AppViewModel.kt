@@ -78,23 +78,17 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
      * Retrieves the data from the API and stores it in a WeatherInfo object.
      */
     fun getWeatherInfo(cityLocation: String) {
+        _uiState.update {
+            it.copy(
+                isWeatherLoading = true
+            )
+        }
         viewModelScope.launch {
-            _uiState.update {
-                it.copy(
-                    isWeatherLoading = true
-                )
-            }
             try {
                 val apiData = appRepository.getWeatherInfo(cityLocation)
-                val forecastdayList = mutableListOf<ForecastInfo>()
-                for (day in apiData.forecast.forecastday) {
-                    forecastdayList.add(day.toForecastInfo())
-                }
                 _uiState.update {
                     it.copy(
-                        weatherInfo = apiData.current.toWeatherInfo(),
-                        currentLocation = apiData.location.toLocation(),
-                        forecastDayList = forecastdayList,
+                        weatherInfo = apiData
                     )
                 }
             } catch (e: IOException) {
@@ -102,11 +96,11 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
             } catch (e: HttpException) {
                 Log.e("HTTP EXCEPTION", "getWeatherInfo()", e)
             }
-            _uiState.update {
-                it.copy(
-                    isWeatherLoading = false
-                )
-            }
+        }
+        _uiState.update {
+            it.copy(
+                isWeatherLoading = false
+            )
         }
     }
 
@@ -117,13 +111,9 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
         viewModelScope.launch {
             try {
                 val apiData = appRepository.getLocationSearchResults(uiState.value.searchBarText)
-                val foundLocationList = mutableListOf<Location>()
-                for (locationItem in apiData) {
-                    foundLocationList.add(locationItem.toLocaton())
-                }
                 _uiState.update {
                     it.copy(
-                        locationSearchResultList = foundLocationList,
+                        locationSearchResultList = apiData,
                         showSearchHistory = false
                     )
                 }

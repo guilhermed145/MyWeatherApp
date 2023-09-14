@@ -1,7 +1,6 @@
 package com.myportfolio.myweatherapp.data
 
 import com.myportfolio.myweatherapp.data.dto.ConditionDTO
-import com.myportfolio.myweatherapp.data.dto.CurrentDTO
 import com.myportfolio.myweatherapp.data.dto.ForecastdayDTO
 import com.myportfolio.myweatherapp.data.dto.LocationDTO
 import com.myportfolio.myweatherapp.data.dto.LocationSearchDTO
@@ -18,38 +17,42 @@ import com.myportfolio.myweatherapp.network.WeatherApiService
  */
 interface AppRepository {
     /** Retrieves weather info from underlying data source. */
-    suspend fun getWeatherInfo(cityName: String): MainDTO
+    suspend fun getWeatherInfo(cityLocation: String): WeatherInfo
 
     /** Retrieves the location search results from underlying data source. */
-    suspend fun getLocationSearchResults(cityName: String): LocationSearchDTO
+    suspend fun getLocationSearchResults(cityName: String): List<Location>
 }
 
 class DefaultAppRepository(
     private val weatherApiService: WeatherApiService
 ) : AppRepository {
-    override suspend fun getWeatherInfo(cityName: String): MainDTO {
+    override suspend fun getWeatherInfo(cityLocation: String): WeatherInfo {
 //        val data = weatherApiService.getWeatherInfo(cityName = cityName)
-        return weatherApiService.getWeatherInfo(cityLocation = cityName)
+        return weatherApiService.getWeatherInfo(cityLocation = cityLocation).toWeatherInfo()
     }
 
-    override suspend fun getLocationSearchResults(cityName: String): LocationSearchDTO {
-        return weatherApiService.getSearchResults(cityName = cityName)
+    override suspend fun getLocationSearchResults(cityName: String): List<Location> {
+        return weatherApiService.getSearchResults(cityName = cityName).toLocationList()
     }
 }
 
 /**
  * DTO to Model mapping functions.
  */
-fun CurrentDTO.toWeatherInfo(): WeatherInfo {
+fun MainDTO.toWeatherInfo(): WeatherInfo {
     return WeatherInfo(
-        cloud = cloud,
-        condition = condition.toCondition(),
-        isDay = is_day,
-        precipMm = precip_mm,
-        tempC = temp_c,
-        tempF = temp_f,
-        windDir = wind_dir,
-        windKph = wind_kph,
+        cloud = current.cloud,
+        condition = current.condition.toCondition(),
+        isDay = current.is_day,
+        precipMm = current.precip_mm,
+        tempC = current.temp_c,
+        tempF = current.temp_f,
+        windDir = current.wind_dir,
+        windKph = current.wind_kph,
+        forecastList = forecast.forecastday.map {
+            it.toForecastInfo()
+        },
+        weatherLocation = location.toLocation()
     )
 }
 
@@ -84,6 +87,12 @@ fun ConditionDTO.toCondition(): Condition {
         icon = icon,
         text = text
     )
+}
+
+fun LocationSearchDTO.toLocationList(): List<Location> {
+    return this.map {
+        it.toLocaton()
+    }
 }
 
 fun LocationSearchItemDTO.toLocaton(): Location {

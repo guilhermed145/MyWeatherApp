@@ -95,11 +95,9 @@ fun MyWeatherApp(
                 composable(route = "main") {
                     MainScreen(
                         weatherInfo = uiState.weatherInfo,
-                        location = uiState.currentLocation,
-                        forecastDayList = uiState.forecastDayList,
                         isLoading = uiState.isWeatherLoading,
                         onRefresh = {
-                            viewModel.getWeatherInfo(uiState.currentLocation.getCoordinatesString())
+                            viewModel.getWeatherInfo(uiState.weatherInfo.weatherLocation.getCoordinatesString())
                         }
                     )
                 }

@@ -35,8 +35,6 @@ import com.myportfolio.myweatherapp.domain.model.getIconUrl
 @Composable
 fun MainScreen(
     weatherInfo: WeatherInfo,
-    location: Location,
-    forecastDayList: List<ForecastInfo>,
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     onRefresh: () -> Unit = {},
@@ -52,7 +50,7 @@ fun MainScreen(
         ) {
             item {
                 LocationInfo(
-                    location = location
+                    location = weatherInfo.weatherLocation
                 )
             }
             item {
@@ -62,7 +60,7 @@ fun MainScreen(
             }
             item {
                 FutureWeatherInfo(
-                    forecastDayList = forecastDayList
+                    forecastDayList = weatherInfo.forecastList
                 )
             }
         }

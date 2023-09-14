@@ -14,6 +14,8 @@ data class WeatherInfo (
     val tempF: Double,
     val windDir: String,
     val windKph: Double,
+    val forecastList: List<ForecastInfo>,
+    val weatherLocation: Location,
     /**@SerialName("img_src") val imgSrc: String*/
 )
 
