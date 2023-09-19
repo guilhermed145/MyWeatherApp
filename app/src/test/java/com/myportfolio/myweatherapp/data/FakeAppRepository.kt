@@ -1,6 +1,5 @@
 package com.myportfolio.myweatherapp.data
 
-import com.myportfolio.myweatherapp.data.dto.LocationSearchDTO
 import com.myportfolio.myweatherapp.domain.model.Condition
 import com.myportfolio.myweatherapp.domain.model.Location
 import com.myportfolio.myweatherapp.domain.model.WeatherInfo
@@ -10,13 +9,11 @@ class FakeAppRepository: AppRepository {
         return WeatherInfo(
             cloud = 0,
             condition = Condition(
-                icon = "",
+                iconUrl = "",
                 text = ""
             ),
-            isDay = 0,
             precipMm = 0.0,
             tempC = 0.0,
-            tempF = 0.0,
             windDir = "",
             windKph = 0.0,
             forecastList = listOf(),
@@ -27,7 +24,7 @@ class FakeAppRepository: AppRepository {
                 lon = 0.0,
                 name = "",
                 region = "",
-                tzId = ""
+                tzId = "",
             ),
         )
     }
@@ -41,7 +38,7 @@ class FakeAppRepository: AppRepository {
                 lon = 0.0,
                 name = cityName,
                 region = "",
-                tzId = "1"
+                tzId = "1",
             ),
             Location(
                 country = "",
@@ -50,7 +47,7 @@ class FakeAppRepository: AppRepository {
                 lon = 1.0,
                 name = cityName,
                 region = "",
-                tzId = "2"
+                tzId = "2",
             ),
             Location(
                 country = "",
@@ -59,7 +56,7 @@ class FakeAppRepository: AppRepository {
                 lon = 2.0,
                 name = cityName,
                 region = "",
-                tzId = "3"
+                tzId = "3",
             )
         )
     }

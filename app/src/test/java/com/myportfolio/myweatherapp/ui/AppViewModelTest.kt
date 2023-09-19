@@ -1,13 +1,9 @@
 package com.myportfolio.myweatherapp.ui
 
-import androidx.lifecycle.ViewModel
 import com.myportfolio.myweatherapp.data.FakeAppRepository
 import com.myportfolio.myweatherapp.domain.model.Location
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -15,12 +11,8 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
-import org.junit.Rule
 
 import org.junit.Test
-import org.junit.rules.TestWatcher
-import org.junit.runner.Description
-import retrofit2.http.GET
 
 class AppViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -72,7 +64,7 @@ class AppViewModelTest {
                 lon = 0.0,
                 name = "",
                 region = "",
-                tzId = ""
+                tzId = "",
             )
         val fakeLocationCopy = fakeLocation.copy()
 

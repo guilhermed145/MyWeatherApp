@@ -22,7 +22,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.myportfolio.myweatherapp.domain.model.getCoordinatesString
 
 /**
  * The main composable for the app. It contains an instance for the Navigation Controller,
@@ -96,8 +95,9 @@ fun MyWeatherApp(
                     MainScreen(
                         weatherInfo = uiState.weatherInfo,
                         isLoading = uiState.isWeatherLoading,
+                        hasWeatherBeenFound = uiState.hasWeatherBeenFound,
                         onRefresh = {
-                            viewModel.getWeatherInfo(uiState.weatherInfo.weatherLocation.getCoordinatesString())
+                            viewModel.getWeatherInfo(uiState.weatherInfo.weatherLocation.coordinates)
                         }
                     )
                 }
@@ -113,7 +113,7 @@ fun MyWeatherApp(
                         onSearchBarTextChange = {viewModel.updateSearchBarText(it)},
                         onSearchButtonClicked = {viewModel.getLocationSearchResults()},
                         onLocationCardClick = {
-                            viewModel.getWeatherInfo(it.getCoordinatesString())
+                            viewModel.getWeatherInfo(it.coordinates)
                             viewModel.addToLocationHistoryList(it)
                             changeLocationScreenToMainScreen()
                         }

@@ -43,10 +43,8 @@ fun MainDTO.toWeatherInfo(): WeatherInfo {
     return WeatherInfo(
         cloud = current.cloud,
         condition = current.condition.toCondition(),
-        isDay = current.is_day,
         precipMm = current.precip_mm,
         tempC = current.temp_c,
-        tempF = current.temp_f,
         windDir = current.wind_dir,
         windKph = current.wind_kph,
         forecastList = forecast.forecastday.map {
@@ -58,51 +56,57 @@ fun MainDTO.toWeatherInfo(): WeatherInfo {
 
 fun LocationDTO.toLocation(): Location {
     return Location(
+        coordinates = "$lat, $lon",
         country = country,
-        lat = lat,
-        localTime = localtime,
-        lon = lon,
         name = name,
         region = region,
-        tzId = tz_id
     )
 }
 
 fun ForecastdayDTO.toForecastInfo(): ForecastInfo {
     return ForecastInfo(
         condition = day.condition.toCondition(),
-        date = date,
+        date = getForecastDateString(date),
         dailyChanceOfRain = day.daily_chance_of_rain,
-        dailyChanceOfSnow = day.daily_chance_of_snow,
         maxtempC = day.maxtemp_c,
-        maxtempF = day.maxtemp_f,
         maxwindKph = day.maxwind_kph,
         mintempC = day.mintemp_c,
-        mintempF = day.mintemp_f,
+        totalPrecipMm = day.totalprecip_mm
     )
 }
 
 fun ConditionDTO.toCondition(): Condition {
     return Condition(
-        icon = icon,
+        iconUrl = "https:$icon",
         text = text
     )
 }
 
 fun LocationSearchDTO.toLocationList(): List<Location> {
     return this.map {
-        it.toLocaton()
+        it.toLocation()
     }
 }
 
-fun LocationSearchItemDTO.toLocaton(): Location {
+fun LocationSearchItemDTO.toLocation(): Location {
     return Location(
+        coordinates = "$lat, $lon",
         country = country,
-        lat = lat,
-        localTime = "",
-        lon = lon,
         name = name,
         region = region,
-        tzId = ""
     )
+}
+
+/**
+ * Returns the formatted date string for the forecast.
+ */
+fun getForecastDateString(date: String): String {
+    return if (date.length < 10) {
+        date
+    } else {
+        val day = date.subSequence(8, 10)
+        val month = date.subSequence(5, 7)
+        val year = date.subSequence(0, 4)
+        "$day/$month/$year"
+    }
 }

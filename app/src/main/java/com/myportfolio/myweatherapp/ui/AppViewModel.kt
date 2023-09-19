@@ -8,11 +8,6 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.myportfolio.myweatherapp.MainApplication
 import com.myportfolio.myweatherapp.data.AppRepository
-import com.myportfolio.myweatherapp.data.toForecastInfo
-import com.myportfolio.myweatherapp.data.toLocation
-import com.myportfolio.myweatherapp.data.toLocaton
-import com.myportfolio.myweatherapp.data.toWeatherInfo
-import com.myportfolio.myweatherapp.domain.model.ForecastInfo
 import com.myportfolio.myweatherapp.domain.model.Location
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -79,28 +74,31 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
      */
     fun getWeatherInfo(cityLocation: String) {
         _uiState.update {
-            it.copy(
-                isWeatherLoading = true
-            )
+            it.copy(isWeatherLoading = true)
         }
         viewModelScope.launch {
             try {
                 val apiData = appRepository.getWeatherInfo(cityLocation)
                 _uiState.update {
                     it.copy(
-                        weatherInfo = apiData
+                        weatherInfo = apiData,
+                        hasWeatherBeenFound = true
                     )
                 }
             } catch (e: IOException) {
                 Log.e("IO EXCEPTION", "getWeatherInfo()", e)
+                _uiState.update {
+                    it.copy(hasWeatherBeenFound = false, isWeatherLoading = false)
+                }
             } catch (e: HttpException) {
                 Log.e("HTTP EXCEPTION", "getWeatherInfo()", e)
+                _uiState.update {
+                    it.copy(hasWeatherBeenFound = false, isWeatherLoading = false)
+                }
             }
         }
         _uiState.update {
-            it.copy(
-                isWeatherLoading = false
-            )
+            it.copy(isWeatherLoading = false)
         }
     }
 
@@ -119,8 +117,20 @@ class AppViewModel(private val appRepository: AppRepository) : ViewModel() {
                 }
             } catch (e: IOException) {
                 Log.e("IO EXCEPTION", "getLocationSearchResults()", e)
+                _uiState.update {
+                    it.copy(
+                        locationSearchResultList = listOf(),
+                        showSearchHistory = false,
+                    )
+                }
             } catch (e: HttpException) {
                 Log.e("HTTP EXCEPTION", "getLocationSearchResults()", e)
+                _uiState.update {
+                    it.copy(
+                        locationSearchResultList = listOf(),
+                        showSearchHistory = false,
+                    )
+                }
             }
         }
     }

@@ -7,11 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -90,7 +88,7 @@ fun ChangeLocationScreen (
             item{
                 if (!showSearchHistory && searchBarResults.isEmpty()) {
                     Text(
-                        text = "No location was found.",
+                        text = "Couldn't find any location.",
                         modifier = Modifier.padding(vertical = 16.dp).fillMaxSize(),
                         color = Color.DarkGray,
                         textAlign = TextAlign.Center
@@ -147,7 +145,7 @@ fun LocationCard(
 ) {
     Card (
         onClick = { onClick(location) },
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Column (
             modifier = Modifier.padding(8.dp)
@@ -164,9 +162,11 @@ fun LocationCard(
             Row(
                 modifier = Modifier
             ) {
-                Text(
-                    text = location.region + ", "
-                )
+                if (location.region != "") {
+                    Text(
+                        text = location.region + ", "
+                    )
+                }
                 Text(
                     text = location.country
                 )
